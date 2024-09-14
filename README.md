@@ -1,16 +1,17 @@
-# Cable Monitoring Device
+# AI-Powered Universal Cable Diagnostic Device
 
-## Description
+## Project Overview
+This project aims to develop an advanced, AI-integrated device for diagnosing various types of cables (high-voltage cables, internet cables, fiber optics, and other services ) ç in both aerial and underground infrastructures worldwide. The device combines multi-cable type detection, AI-driven diagnostics, and an intuitive user interface for efficient cable management and maintenance.
 
-This project aims to develop a compact and advanced device for detecting and monitoring high-voltage cables, internet cables, fiber optics, and other services on utility poles in Latin America. The device will provide detailed information about cable type, voltage, and operational status.
-
-## Features
-
-- **Cable Detection:** Identifies high-voltage cables, internet cables, fiber optics, and others.
-- **Voltage Measurement:** Real-time monitoring of cable voltage.
-- **Operational Status:** Determines the operational status of the cables.
-- **Detailed Data:** Specific information about cable type and condition.
-- **User-Friendly Interface:** Easy to use for field engineers.
+## Key Features
+- AI-powered multi-cable type detection and analysis
+- Modular design for adaptability to aerial and underground scenarios
+- Advanced sensors including GPR and acoustic technologies
+- Augmented Reality (AR) interface for intuitive data visualization
+- GPS integration for precise cable and fault mapping
+- Environmental resilience for various weather conditions
+- Predictive maintenance capabilities using AI algorithms
+- Seamless integration with existing cable management systems
 
 ## Technologies Used
 
