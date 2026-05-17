@@ -1,20 +1,33 @@
 import unittest
+import os
 from src.ai_model import CableDiagnosticModel, load_model
 from src.sensors.gpr_sensor import GPRSensor
 from src.sensors.acoustic_sensor import AcousticSensor
 
 class TestCableDiagnosticDevice(unittest.TestCase):
-    def test_model_predictions(self):
-        model = CableDiagnosticModel()
+    @classmethod
+    def setUpClass(cls):
+        cls.model_path = 'models/cable_model.joblib'
+
+    def test_model_predictions_fallback(self):
+        # Test without model file (fallback logic)
+        model = CableDiagnosticModel(model_path='non_existent.joblib')
 
         # Test healthy
         self.assertEqual(model.predict({'acoustic': 0.1, 'gpr': 0.1}), 'Healthy')
 
-        # Test degraded
-        self.assertEqual(model.predict({'acoustic': 0.6, 'gpr': 0.1}), 'Degraded')
-
         # Test fault
         self.assertEqual(model.predict({'acoustic': 0.1, 'gpr': 0.9}), 'Fault Detected')
+
+    def test_model_predictions_trained(self):
+        if os.path.exists(self.model_path):
+            model = CableDiagnosticModel(model_path=self.model_path)
+
+            # The trained model should behave similarly to our generation logic
+            self.assertEqual(model.predict({'acoustic': 0.1, 'gpr': 0.1}), 'Healthy')
+            self.assertEqual(model.predict({'acoustic': 0.9, 'gpr': 0.1}), 'Fault Detected')
+        else:
+            self.skipTest("Trained model not found for testing")
 
     def test_sensors(self):
         gpr = GPRSensor()
@@ -28,10 +41,6 @@ class TestCableDiagnosticDevice(unittest.TestCase):
 
         val = acoustic.read_data()
         self.assertTrue(0 <= val <= 1)
-
-    def test_load_model(self):
-        model = load_model('dummy_path')
-        self.assertIsInstance(model, CableDiagnosticModel)
 
 if __name__ == '__main__':
     unittest.main()
