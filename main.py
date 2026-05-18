@@ -1,30 +1,19 @@
 import time
 import os
-import json
 from src.ai_model import load_model
 from src.sensors.gpr_sensor import GPRSensor
 from src.sensors.acoustic_sensor import AcousticSensor
 from src.sensors.gps_sensor import GPSSensor
+from src.database import init_db, add_entry
 
-def save_to_history(entry):
-    history_file = 'data/history.json'
-    history = []
-    if os.path.exists(history_file):
-        try:
-            with open(history_file, 'r') as f:
-                history = json.load(f)
-        except json.JSONDecodeError:
-            history = []
-
-    history.append(entry)
-    # Keep only last 100 entries for the prototype
-    history = history[-100:]
-
-    with open(history_file, 'w') as f:
-        json.dump(history, f, indent=4)
+def log_alert(status, location):
+    os.makedirs('data', exist_ok=True)
+    with open('data/alerts.log', 'a') as f:
+        f.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] CRITICAL ALERT: {status} at Lat:{location['latitude']}, Lon:{location['longitude']}\n")
 
 def main():
-    print("Initializing GPS-Integrated Enhanced Cable Diagnostic Device...")
+    print("Initializing Enhanced Cable Diagnostic Device with Database and Alerting...")
+    init_db()
 
     model_path = 'models/cable_model.joblib'
     model = load_model(model_path)
@@ -38,7 +27,7 @@ def main():
     print("Starting diagnostic loop (Press Ctrl+C to stop)...")
     try:
         iterations = 0
-        while iterations < 5:
+        while iterations < 10:
             combined_sensor_data = {}
             location = {}
             for sensor in sensors:
@@ -49,22 +38,22 @@ def main():
                     combined_sensor_data.update(data)
 
             status = model.predict(combined_sensor_data)
+            timestamp = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
 
-            entry = {
-                'timestamp': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
-                'location': location,
-                'status': status,
-                'sensor_data': combined_sensor_data
-            }
+            # Save to Database
+            add_entry(timestamp, location['latitude'], location['longitude'], status, combined_sensor_data)
 
-            save_to_history(entry)
+            # Alerting for critical faults
+            if any(fault in status for fault in ['Failure', 'Break', 'Intrusion']):
+                log_alert(status, location)
+                print(f"!!! CRITICAL ALERT: {status} detected !!!")
 
-            print(f"[{entry['timestamp']}] STATUS: {status} at {location}")
+            print(f"[{timestamp}] STATUS: {status} at {location}")
 
             time.sleep(1)
             iterations += 1
 
-        print("Demo completed. History saved to data/history.json")
+        print("Cycle completed. Data saved to SQLite database and alerts logged to data/alerts.log.")
     except KeyboardInterrupt:
         print("\nStopping device...")
 

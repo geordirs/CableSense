@@ -6,17 +6,17 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -74.07195231418044,
-                    4.7115622595368345
+                    -74.07257934384872,
+                    4.71104859798983
                 ]
             },
             "properties": {
-                "timestamp": "2026-05-18T01:27:14Z",
+                "timestamp": "2026-05-18T02:30:44Z",
                 "status": "Degraded",
-                "gpr_amplitude": 0.04103017233275641,
-                "soil_resistivity": 503.12184006476383,
-                "burial_depth": 2.9753093091619127,
-                "pd_intensity": 0.4332987302389175
+                "gpr_amplitude": 0.587446896096926,
+                "soil_resistivity": 628.2586170912697,
+                "burial_depth": 2.7174871275617725,
+                "pd_intensity": 0.35840694460358047
             }
         },
         {
@@ -24,17 +24,17 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -74.07305434081063,
-                    4.711581918962079
+                    -74.07123821406482,
+                    4.711080900563737
                 ]
             },
             "properties": {
-                "timestamp": "2026-05-18T01:27:15Z",
+                "timestamp": "2026-05-18T02:30:45Z",
                 "status": "Degraded",
-                "gpr_amplitude": 0.8580541080889688,
-                "soil_resistivity": 403.4603961430419,
-                "burial_depth": 0.5809021130291382,
-                "pd_intensity": 0.40454732586873277
+                "gpr_amplitude": 0.4361491203671314,
+                "soil_resistivity": 988.3196584930724,
+                "burial_depth": 1.9607948283817673,
+                "pd_intensity": 0.5414038579449986
             }
         },
         {
@@ -42,17 +42,53 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -74.07265754055383,
-                    4.710261455476069
+                    -74.07146585048258,
+                    4.71019728947852
                 ]
             },
             "properties": {
-                "timestamp": "2026-05-18T01:27:16Z",
+                "timestamp": "2026-05-18T02:30:46Z",
+                "status": "Degraded",
+                "gpr_amplitude": 0.5092071448741162,
+                "soil_resistivity": 139.42205738562808,
+                "burial_depth": 2.0590773060632257,
+                "pd_intensity": 0.18141116900942944
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.07200343696721,
+                    4.71004942938129
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-05-18T02:30:47Z",
+                "status": "Insulation Failure",
+                "gpr_amplitude": 0.14724870353520103,
+                "soil_resistivity": 151.27188705527195,
+                "burial_depth": 1.200559213311126,
+                "pd_intensity": 0.7994678906336804
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.0717937371762,
+                    4.710136525388116
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-05-18T02:30:48Z",
                 "status": "Healthy",
-                "gpr_amplitude": 0.19007057934816474,
-                "soil_resistivity": 966.7304685206974,
-                "burial_depth": 1.7798715169310728,
-                "pd_intensity": 0.22270126089000175
+                "gpr_amplitude": 0.16390885943290623,
+                "soil_resistivity": 705.5799045274613,
+                "burial_depth": 2.669153141074643,
+                "pd_intensity": 0.20218000549397686
             }
         },
         {
@@ -60,17 +96,17 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -74.0718357213719,
-                    4.710572265919261
+                    -74.07130387858227,
+                    4.711187939757675
                 ]
             },
             "properties": {
-                "timestamp": "2026-05-18T01:27:17Z",
+                "timestamp": "2026-05-18T02:30:49Z",
                 "status": "Degraded",
-                "gpr_amplitude": 0.48140612061985544,
-                "soil_resistivity": 59.21192679619145,
-                "burial_depth": 1.3471855847885745,
-                "pd_intensity": 0.7396378703830642
+                "gpr_amplitude": 0.8142305241122624,
+                "soil_resistivity": 581.8065742536518,
+                "burial_depth": 1.894666646655697,
+                "pd_intensity": 0.10514529840972131
             }
         },
         {
@@ -78,17 +114,71 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -74.07227441308603,
-                    4.711777464143364
+                    -74.07306935528095,
+                    4.711960995315201
                 ]
             },
             "properties": {
-                "timestamp": "2026-05-18T01:27:18Z",
+                "timestamp": "2026-05-18T02:30:50Z",
                 "status": "Degraded",
-                "gpr_amplitude": 0.8258709517143011,
-                "soil_resistivity": 751.2801448994951,
-                "burial_depth": 2.835290249326991,
-                "pd_intensity": 0.3576235850242151
+                "gpr_amplitude": 0.6998555159494837,
+                "soil_resistivity": 622.8378432163919,
+                "burial_depth": 2.6938340823757936,
+                "pd_intensity": 0.5944449909335527
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.07272277691015,
+                    4.710635382122563
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-05-18T02:30:51Z",
+                "status": "Degraded",
+                "gpr_amplitude": 0.8227373994815093,
+                "soil_resistivity": 533.1900149768927,
+                "burial_depth": 2.0411281071893828,
+                "pd_intensity": 0.46006692167365537
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.0725779733072,
+                    4.711285357413405
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-05-18T02:30:52Z",
+                "status": "Degraded",
+                "gpr_amplitude": 0.8147850199872259,
+                "soil_resistivity": 836.6084004610435,
+                "burial_depth": 1.9018616573388198,
+                "pd_intensity": 0.6893376056924276
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.07303312673933,
+                    4.710109483220876
+                ]
+            },
+            "properties": {
+                "timestamp": "2026-05-18T02:30:53Z",
+                "status": "Insulation Failure",
+                "gpr_amplitude": 0.09175654713825576,
+                "soil_resistivity": 559.818900513941,
+                "burial_depth": 2.714458371652719,
+                "pd_intensity": 0.8179711631358884
             }
         }
     ]

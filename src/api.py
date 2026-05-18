@@ -1,6 +1,5 @@
 import sys
 import os
-import json
 
 # Add the project root to the python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -11,6 +10,7 @@ from src.ai_model import load_model
 from src.sensors.gpr_sensor import GPRSensor
 from src.sensors.acoustic_sensor import AcousticSensor
 from src.sensors.gps_sensor import GPSSensor
+from src.database import get_history
 
 app = Flask(__name__, static_folder='../static')
 CORS(app)
@@ -45,16 +45,11 @@ def get_status():
     })
 
 @app.route('/api/history')
-def get_history():
-    history_file = 'data/history.json'
-    if os.path.exists(history_file):
-        with open(history_file, 'r') as f:
-            return jsonify(json.load(f))
-    return jsonify([])
+def api_history():
+    return jsonify(get_history())
 
 @app.route('/api/ar-overlay')
 def get_ar_overlay():
-    # Simulate AR metadata for visualization
     combined_sensor_data = {}
     for sensor in sensors:
         if sensor.sensor_type != 'gps':
@@ -70,11 +65,6 @@ def get_ar_overlay():
                 'depth_m': depth,
                 'label': f'Cable: {status}',
                 'color': 'red' if 'Failure' in status or 'Break' in status else 'green'
-            },
-            {
-                'type': 'soil_info',
-                'resistivity': combined_sensor_data.get('soil_resistivity', 500),
-                'label': 'Soil Condition: Normal'
             }
         ]
     })
