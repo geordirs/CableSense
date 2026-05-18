@@ -1,5 +1,16 @@
 # Cable Diagnostic Device - User & Hardware Guide
 
+## 🚀 Quick Start (Demo Mode)
+If you want to see the project running immediately on your computer:
+1. Ensure you have Python installed.
+2. Run the automated demo script:
+   ```bash
+   ./run_demo.sh
+   ```
+3. Open your browser and go to: `http://localhost:5000`
+
+---
+
 ## 1. Hardware Setup
 To build the physical device, you will need:
 - **Computing Unit**: Raspberry Pi 4 (4GB+ recommended).
