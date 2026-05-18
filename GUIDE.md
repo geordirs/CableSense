@@ -1,60 +1,42 @@
 # Cable Diagnostic Device - User & Hardware Guide
 
 ## 🚀 Quick Start (Demo Mode)
-If you want to see the project running immediately on your computer:
-1. Ensure you have Python installed.
-2. Run the automated demo script:
-   ```bash
-   ./run_demo.sh
-   ```
-3. Open your browser and go to: `http://localhost:5000`
+1. Run the automated demo: `./run_demo.sh`
+2. Open `http://localhost:5000`
 
 ---
 
-## 1. Hardware Setup
-To build the physical device, you will need:
-- **Computing Unit**: Raspberry Pi 4 (4GB+ recommended).
-- **GPR Sensor**: Ground Penetrating Radar module with serial/USB interface.
-- **Acoustic Sensor**: High-sensitivity piezoelectric sensor for Partial Discharge detection.
-- **GPS Module**: USB or GPIO-based GPS receiver.
+## 1. Hardware Assembly (Arduino + Raspberry Pi)
+For real-world testing, use an Arduino as a sensor hub:
+1. **Arduino Firmware**: Flash `hardware/arduino_sensor_hub.ino` to an Arduino Uno/Nano.
+2. **Wiring**:
+   - GPR Sensor -> Arduino Pin A0
+   - Acoustic Sensor -> Arduino Pin A1
+3. **Connection**: Connect Arduino to Raspberry Pi via USB.
+4. **Software Configuration**: The system automatically attempts to connect to `/dev/ttyACM0`.
 
-### Connection Diagram:
-- Connect the GPR module via USB.
-- Connect the Acoustic sensor to the ADC pins (using an MCP3008 if using a Raspberry Pi).
-- Connect the GPS module to the UART pins or USB.
+## 2. Security & Auditing
+- The API is protected by a token. Use the header `X-API-Token: cable-secure-token-2024` for authenticated requests.
+- Audit logs are stored in `logs/audit.log`.
+- Refer to `SECURITY.md` for full security guidelines.
 
-## 2. Software Installation
-1. Clone the repository and install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-2. (Optional) Re-train the AI model:
-   ```bash
-   python3 src/data_generator.py
-   python3 src/train_model.py
-   ```
-
-## 3. Operation
-### Running the Diagnostic Device
-To start the real-time diagnostic loop and save data:
+## 3. Deployment (Docker)
+To deploy the system in a production environment:
 ```bash
-python3 main.py
+docker-compose up -d
+```
+This will start the API server and persist data/logs in the local directory.
+
+## 4. AI Training Pipeline
+If you need to update the model with new data:
+```bash
+python3 src/data_generator.py
+python3 src/train_model.py
 ```
 
-### Starting the Web Dashboard
-To view results in a browser:
-1. Start the API:
-   ```bash
-   python3 src/api.py
-   ```
-2. Open `http://localhost:5000` in your browser.
-
-## 4. GIS Integration
-To export the collected diagnostic history for GIS software (QGIS, ArcGIS):
+## 5. GIS & Reporting
+Export collected diagnostics to GeoJSON:
 ```bash
 python3 src/utils/exporter.py
 ```
-This will generate `data/diagnostics.geojson`.
-
-## 5. AR Interface
-The API provides an endpoint for Augmented Reality overlays at `/api/ar-overlay`. This can be consumed by a mobile app or AR glasses to project cable information onto the real-world view.
+Open `data/diagnostics.geojson` in QGIS or ArcGIS.

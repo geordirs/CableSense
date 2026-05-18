@@ -1,0 +1,9 @@
+services:
+  cable-diagnostic-api:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: always
