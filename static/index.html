@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cable Diagnostic Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; margin: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .status { font-size: 24px; font-weight: bold; }
+        .Healthy { color: green; }
+        .Degraded { color: orange; }
+        .Insulation-Failure, .Moisture-Intrusion, .Physical-Break { color: red; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    </style>
+</head>
+<body>
+    <h1>AI Cable Diagnostic Dashboard</h1>
+    <div class="card">
+        <h2>System Status</h2>
+        <div id="status" class="status">Loading...</div>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <h2>Sensor Data</h2>
+            <pre id="sensor-data"></pre>
+        </div>
+        <div class="card">
+            <h2>Location</h2>
+            <p id="location"></p>
+        </div>
+    </div>
+
+    <script>
+        async function updateStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+
+                const statusElement = document.getElementById('status');
+                statusElement.innerText = data.status;
+                // Replace spaces with hyphens to match CSS classes
+                statusElement.className = 'status ' + data.status.replace(/\s+/g, '-');
+
+                document.getElementById('sensor-data').innerText = JSON.stringify(data.sensor_data, null, 2);
+                document.getElementById('location').innerText = `Lat: ${data.location.latitude.toFixed(6)}, Lon: ${data.location.longitude.toFixed(6)}`;
+            } catch (e) {
+                console.error("Failed to fetch status", e);
+            }
+        }
+
+        setInterval(updateStatus, 2000);
+        updateStatus();
+    </script>
+</body>
+</html>
