@@ -15,24 +15,32 @@ class CableDiagnosticModel:
     def predict(self, sensor_data):
         """
         Predicts the status of the cable based on sensor data.
-        :param sensor_data: Dictionary containing data from various sensors.
+        :param sensor_data: Dictionary containing flattened data from all sensors.
         :return: A string indicating the status.
         """
         if self.model:
             # Prepare input data for the model
             df = pd.DataFrame([sensor_data])
-            # Ensure columns are in the correct order
-            X = df[['gpr', 'acoustic']]
+            # Features must match the order during training
+            features = ['gpr_amplitude', 'pd_intensity', 'soil_resistivity', 'burial_depth']
+            # Fill missing features with default values if necessary
+            for f in features:
+                if f not in df.columns:
+                    df[f] = 0.0
+
+            X = df[features]
             prediction = self.model.predict(X)
             return prediction[0]
         else:
             # Fallback logic
-            acoustic_value = sensor_data.get('acoustic', 0)
-            gpr_value = sensor_data.get('gpr', 0)
+            pd_intensity = sensor_data.get('pd_intensity', 0)
+            gpr_amplitude = sensor_data.get('gpr_amplitude', 0)
 
-            if acoustic_value > 0.8 or gpr_value > 0.8:
-                return 'Fault Detected'
-            elif acoustic_value > 0.5 or gpr_value > 0.5:
+            if pd_intensity > 0.75:
+                return 'Insulation Failure'
+            elif gpr_amplitude > 0.8:
+                return 'Moisture Intrusion/Physical Break'
+            elif pd_intensity > 0.4 or gpr_amplitude > 0.5:
                 return 'Degraded'
             else:
                 return 'Healthy'

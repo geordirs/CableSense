@@ -14,18 +14,32 @@ class TestCableDiagnosticDevice(unittest.TestCase):
         model = CableDiagnosticModel(model_path='non_existent.joblib')
 
         # Test healthy
-        self.assertEqual(model.predict({'acoustic': 0.1, 'gpr': 0.1}), 'Healthy')
+        self.assertEqual(model.predict({'pd_intensity': 0.1, 'gpr_amplitude': 0.1}), 'Healthy')
 
-        # Test fault
-        self.assertEqual(model.predict({'acoustic': 0.1, 'gpr': 0.9}), 'Fault Detected')
+        # Test Insulation Failure
+        self.assertEqual(model.predict({'pd_intensity': 0.9, 'gpr_amplitude': 0.1}), 'Insulation Failure')
 
     def test_model_predictions_trained(self):
         if os.path.exists(self.model_path):
             model = CableDiagnosticModel(model_path=self.model_path)
 
-            # The trained model should behave similarly to our generation logic
-            self.assertEqual(model.predict({'acoustic': 0.1, 'gpr': 0.1}), 'Healthy')
-            self.assertEqual(model.predict({'acoustic': 0.9, 'gpr': 0.1}), 'Fault Detected')
+            # Test healthy
+            status = model.predict({
+                'gpr_amplitude': 0.1,
+                'pd_intensity': 0.1,
+                'soil_resistivity': 500,
+                'burial_depth': 1.5
+            })
+            self.assertEqual(status, 'Healthy')
+
+            # Test Insulation Failure
+            status = model.predict({
+                'gpr_amplitude': 0.1,
+                'pd_intensity': 0.9,
+                'soil_resistivity': 500,
+                'burial_depth': 1.5
+            })
+            self.assertEqual(status, 'Insulation Failure')
         else:
             self.skipTest("Trained model not found for testing")
 
@@ -33,14 +47,12 @@ class TestCableDiagnosticDevice(unittest.TestCase):
         gpr = GPRSensor()
         acoustic = AcousticSensor()
 
-        self.assertEqual(gpr.sensor_type, 'gpr')
-        self.assertEqual(acoustic.sensor_type, 'acoustic')
+        gpr_data = gpr.read_data()
+        self.assertIn('gpr_amplitude', gpr_data)
+        self.assertIn('soil_resistivity', gpr_data)
 
-        val = gpr.read_data()
-        self.assertTrue(0 <= val <= 1)
-
-        val = acoustic.read_data()
-        self.assertTrue(0 <= val <= 1)
+        acoustic_data = acoustic.read_data()
+        self.assertIn('pd_intensity', acoustic_data)
 
 if __name__ == '__main__':
     unittest.main()
