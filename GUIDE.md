@@ -6,12 +6,16 @@
 
 ---
 
+## 🛒 Shopping & Hardware List
+For a full list of physical components to buy and how to wire them, please refer to:
+👉 **[HARDWARE_LIST.md](HARDWARE_LIST.md)**
+
+---
+
 ## 1. Hardware Assembly (Arduino + Raspberry Pi)
 For real-world testing, use an Arduino as a sensor hub:
 1. **Arduino Firmware**: Flash `hardware/arduino_sensor_hub.ino` to an Arduino Uno/Nano.
-2. **Wiring**:
-   - GPR Sensor -> Arduino Pin A0
-   - Acoustic Sensor -> Arduino Pin A1
+2. **Wiring**: Follow the wiring guide in `HARDWARE_LIST.md`.
 3. **Connection**: Connect Arduino to Raspberry Pi via USB.
 4. **Software Configuration**: The system automatically attempts to connect to `/dev/ttyACM0`.
 

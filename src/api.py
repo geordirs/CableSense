@@ -11,13 +11,14 @@ from src.ai_model import load_model
 from src.sensors.gpr_sensor import GPRSensor
 from src.sensors.acoustic_sensor import AcousticSensor
 from src.sensors.gps_sensor import GPSSensor
+from src.sensors.serial_sensor import SerialSensorBridge
 from src.database import get_history
 from src.logger import system_log, audit_log
 
 app = Flask(__name__, static_folder='../static')
 
 # Basic Security: Token-based authentication
-API_TOKEN = "cable-secure-token-2024"
+API_TOKEN = os.environ.get('CABLE_API_TOKEN', 'cable-secure-token-2024')
 
 def require_token(f):
     @wraps(f)
@@ -30,6 +31,7 @@ def require_token(f):
     return decorated
 
 model = load_model('models/cable_model.joblib')
+hardware = SerialSensorBridge()
 sensors = [GPRSensor(), AcousticSensor(), GPSSensor()]
 
 @app.route('/')
@@ -38,15 +40,22 @@ def index():
 
 @app.route('/api/status')
 def get_status():
-    # Status is public for dashboard viewing, but we log the request
     combined_sensor_data = {}
     location = {}
+
+    # Try hardware first
+    hw_data = hardware.read_data()
+    if hw_data:
+        combined_sensor_data.update(hw_data)
+
     for sensor in sensors:
         data = sensor.read_data()
         if sensor.sensor_type == 'gps':
             location = data
-        else:
-            combined_sensor_data.update(data)
+        elif isinstance(data, dict):
+            for key, val in data.items():
+                if key not in combined_sensor_data:
+                    combined_sensor_data[key] = val
 
     status = model.predict(combined_sensor_data)
     return jsonify({
@@ -64,10 +73,13 @@ def api_history():
 @app.route('/api/ar-overlay')
 @require_token
 def get_ar_overlay():
-    combined_sensor_data = {}
+    combined_sensor_data = hardware.read_data() or {}
     for sensor in sensors:
         if sensor.sensor_type != 'gps':
-            combined_sensor_data.update(sensor.read_data())
+            data = sensor.read_data()
+            for key, val in data.items():
+                if key not in combined_sensor_data:
+                    combined_sensor_data[key] = val
 
     depth = combined_sensor_data.get('burial_depth', 1.0)
     status = model.predict(combined_sensor_data)
